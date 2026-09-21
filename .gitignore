@@ -1,0 +1,19 @@
+# Secrets
+.env
+*.pem
+*.json.key
+service-account*.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Editors / OS
+.vscode/
+.DS_Store
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
