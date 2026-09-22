@@ -15,7 +15,6 @@ Ask for these three things (sent privately, never through Git):
 2. **GCS bucket name** — currently `technovators-cmpg321-2026-raw`
 3. **Confirmation you've been added to the GCP project** — you need a Google account added with `BigQuery Data Viewer` + `BigQuery Job User` + `BigQuery Data Editor` roles. Send Oara your Gmail address if you haven't already.
 
-You do **not** need any `.json` key file. You do **not** need billing access. You do **not** need Terraform.
 
 ---
 
@@ -107,8 +106,8 @@ If your change touches `docker-compose.yml`, `terraform/`, or anything infrastru
 ## What you should NOT do
 - Don't commit `.env` or any `.json` key file
 - Don't run anything in `terraform/`
-- Don't edit `Dockerfile` / `docker-compose.yml` without opening a PR for review
+- Don't edit `Dockerfile` / `docker-compose.yml` without Communicating with Oara for review
 - Don't write to the shared `raw` or `star` BigQuery datasets directly — build in your own `dbt_<name>` dataset first
 
 ## Who to ask
-Anything GCP/infra-related (access, errors, credentials) → ask Oara before troubleshooting alone, since only she can see/fix the project-level config.
+Anything GCP/infra-related (access, errors, credentials) → ask Oara before troubleshooting alone, since only he can see/fix the project-level config.
