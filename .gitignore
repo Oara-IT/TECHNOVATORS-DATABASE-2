@@ -14,6 +14,12 @@ __pycache__/
 .DS_Store
 
 # Terraform
-.terraform/
-*.tfstate
-*.tfstate.*
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+
+# dbt
+dbt_uber/target/
+dbt_uber/logs/
+dbt_uber/dbt_packages/

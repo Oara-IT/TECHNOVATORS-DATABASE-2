@@ -1,2 +1,8 @@
+pandas
+pyarrow
 psycopg2-binary
+google-cloud-storage
+google-auth
 python-dotenv
+google-cloud-bigquery
+dbt-bigquery
