@@ -1,4 +1,3 @@
--- Urban transport schema (PostgreSQL) - 12 tables, 3NF
 DROP TABLE IF EXISTS drivers CASCADE;  -- old flat Phase 1 table
 DROP TABLE IF EXISTS trip_fare, trip, driver_platform, driver, pricing_zone,
     rider, payment_method, cancellation_reason, trip_status, ride_category,
@@ -90,15 +89,3 @@ CREATE TABLE trip_fare (
     CONSTRAINT chk_fare_split
         CHECK (ABS(total_fare_zar - platform_commission_zar - driver_payout_zar) <= 0.02)
 );
-
--- ---------- Indexes on FKs / common filters ----------
-CREATE INDEX idx_zone_city      ON pricing_zone(city_id);
-CREATE INDEX idx_driver_city    ON driver(operating_city_id);
-CREATE INDEX idx_dp_platform    ON driver_platform(platform_id);
-CREATE INDEX idx_trip_rider     ON trip(rider_id);
-CREATE INDEX idx_trip_driver    ON trip(driver_id);
-CREATE INDEX idx_trip_zone      ON trip(zone_id);
-CREATE INDEX idx_trip_category  ON trip(ride_category_id);
-CREATE INDEX idx_trip_status    ON trip(trip_status_id);
-CREATE INDEX idx_trip_time      ON trip(request_timestamp);
-CREATE INDEX idx_fare_payment   ON trip_fare(payment_method_id);
