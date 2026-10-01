@@ -29,9 +29,16 @@ CREATE TABLE payment_method (
     payment_method_name  VARCHAR(30) NOT NULL UNIQUE
 );
 
--- ---------- Core entities ----------
+-- ---------- Core entities ---------
 CREATE TABLE rider (
-    rider_id VARCHAR(20) PRIMARY KEY
+    rider_id              VARCHAR(20) PRIMARY KEY,
+    first_name            VARCHAR(60) NOT NULL,
+    last_name             VARCHAR(60) NOT NULL,
+    mobile_number         VARCHAR(20) NOT NULL,
+    home_city_id          SMALLINT NOT NULL REFERENCES city(city_id),
+    province              VARCHAR(50) NOT NULL,
+    preferred_payment_id  SMALLINT NOT NULL REFERENCES payment_method(payment_method_id),
+    account_created_date  DATE NOT NULL
 );
 
 CREATE TABLE pricing_zone (

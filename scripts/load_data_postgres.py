@@ -33,6 +33,7 @@ def lookup(cur, table, values):
 
 zones, drivers = read("pricing_surge_zones.csv"), read("sa_drivers.csv")
 header, fare = read("trip_headers.csv"), read("trip_fare_breakdown.csv")
+riders=read("sa_riders.csv")
 
 conn = psycopg2.connect(host=os.getenv("PG_HOST", "localhost"), port=os.getenv("PG_PORT", "5432"),
                         dbname=os.environ["POSTGRES_DB"], user=os.environ["POSTGRES_USER"],
@@ -41,7 +42,7 @@ with conn, conn.cursor() as cur:
     cur.execute(Path("sql/schema2.sql").read_text())
 
     # lookup tables
-    city = lookup(cur, "city", list(zones.city) + list(drivers.operating_city))
+    city = lookup(cur, "city", list(zones.city) + list(drivers.operating_city) + list(riders.home_city))
     platform = lookup(cur, "platform", ["Uber", "Bolt"])
     category = lookup(cur, "ride_category", header.ride_category)
     status = lookup(cur, "trip_status", header.trip_status)
@@ -49,7 +50,11 @@ with conn, conn.cursor() as cur:
     payment = lookup(cur, "payment_method", fare.payment_method)
 
     # entities
-    insert(cur, "rider", pd.DataFrame({"rider_id": sorted(header.rider_id.unique())}))
+    insert(cur, "rider", riders.assign(
+        home_city_id=riders.home_city.map(city),
+        preferred_payment_id=riders.preferred_payment.map(payment),
+    )[["rider_id", "first_name", "last_name", "mobile_number", "home_city_id",
+       "province", "preferred_payment_id", "account_created_date"]])
     insert(cur, "pricing_zone", zones.assign(city_id=zones.city.map(city))
            .drop(columns="city"))
     insert(cur, "driver", drivers.assign(operating_city_id=drivers.operating_city.map(city))
