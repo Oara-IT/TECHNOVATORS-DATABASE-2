@@ -3,3 +3,16 @@ version: 2
 sources:
   - name: raw
     dataset: raw_3NF
+    tables:
+      - name: city
+      - name: platform
+      - name: ride_category
+      - name: trip_status
+      - name: cancellation_reason
+      - name: payment_method
+      - name: rider
+      - name: pricing_zone
+      - name: driver
+      - name: driver_platform
+      - name: trip
+      - name: trip_fare
