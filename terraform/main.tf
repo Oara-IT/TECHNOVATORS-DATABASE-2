@@ -21,8 +21,8 @@ resource "google_storage_bucket" "raw" {
 }
 
 # BigQuery dataset for the raw 3NF copy
-resource "google_bigquery_dataset" "raw" {
-  dataset_id = "raw"
+resource "google_bigquery_dataset" "raw_3NF" {
+  dataset_id = "raw_3NF"
   project    = var.project_id
   location   = var.region
 }

@@ -2,9 +2,4 @@ version: 2
 
 sources:
   - name: raw
-    dataset: raw
-    tables:
-      - name: drivers
-      # - name: riders
-      # - name: vehicles
-      # add one entry per table as it lands in BigQuery
+    dataset: raw_3NF

@@ -17,9 +17,18 @@ from google.oauth2 import service_account
 load_dotenv()
 
 TABLES = {
-    "drivers": "drivers",
-    # "riders": "riders",
-    # "trips": "trips",
+    "city": "city",
+    "platform": "platform",
+    "ride_category": "ride_category",
+    "trip_status": "trip_status",
+    "cancellation_reason": "cancellation_reason",
+    "payment_method": "payment_method",
+    "rider": "rider",
+    "pricing_zone": "pricing_zone",
+    "driver": "driver",
+    "driver_platform": "driver_platform",
+    "trip": "trip",
+    "trip_fare": "trip_fare",
 }
 
 
@@ -66,7 +75,7 @@ def main():
                 dataframe.to_parquet(local_path, engine="pyarrow", index=False)
 
                 blob_path = (
-                    f"raw/{folder}/extract_date={run_date}/{table}.parquet"
+                   f"3NF/{folder}/{table}.parquet"
                 )
                 bucket.blob(blob_path).upload_from_filename(local_path)
 

@@ -1,5 +1,5 @@
 """
-Load Parquet files from GCS into the BigQuery raw dataset.
+Load Parquet files from GCS into the BigQuery raw_3NF dataset.
 Run from repo root: python scripts/load_to_bigquery.py
 """
 
@@ -14,9 +14,18 @@ from google.oauth2 import service_account
 load_dotenv()
 
 TABLES = {
-    "drivers": "drivers",
-    # "riders": "riders",
-    # "trips": "trips",
+    "city": "city",
+    "platform": "platform",
+    "ride_category": "ride_category",
+    "trip_status": "trip_status",
+    "cancellation_reason": "cancellation_reason",
+    "payment_method": "payment_method",
+    "rider": "rider",
+    "pricing_zone": "pricing_zone",
+    "driver": "driver",
+    "driver_platform": "driver_platform",
+    "trip": "trip",
+    "trip_fare": "trip_fare",
 }
 
 
@@ -34,6 +43,7 @@ def get_bq_client():
 
 
 def main():
+    project_id = os.environ["GCP_PROJECT_ID"]
     client = get_bq_client()
     bucket = os.environ["GCS_BUCKET"]
 
@@ -46,11 +56,8 @@ def main():
     for table, folder in TABLES.items():
         print(f"Loading {table} to BigQuery...")
 
-        uri = (
-            f"gs://{bucket}/raw/{folder}/"
-            f"extract_date={run_date}/{table}.parquet"
-        )
-        table_id = f"{os.environ['GCP_PROJECT_ID']}.raw.{table}"
+        uri = f"gs://{bucket}/3NF/{folder}/{table}.parquet"
+        table_id = f"{project_id}.raw_3NF.{table}"
 
         job_config = bigquery.LoadJobConfig(
             source_format=bigquery.SourceFormat.PARQUET,
