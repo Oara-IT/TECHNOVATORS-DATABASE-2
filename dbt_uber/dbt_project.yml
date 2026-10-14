@@ -34,3 +34,6 @@ models:
     staging:
       +materialized: view
       +schema: raw
+    marts:
+      +materialized: table
+      +schema: star

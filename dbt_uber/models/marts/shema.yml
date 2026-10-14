@@ -1,0 +1,145 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: One row per calendar date used to filter trip activity.
+    columns:
+      - name: full_date
+        tests:
+          - not_null
+          - unique
+      - name: day_of_week
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6]
+              quote: false
+      - name: is_weekend
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+      - name: is_month_end
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+      - name: month_num
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+              quote: false
+
+  - name: dim_driver
+    description: One row per driver.
+    columns:
+      - name: driver_id
+        tests:
+          - not_null
+          - unique
+      - name: is_dual_platform
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+
+  - name: dim_zone
+    description: One row per pricing zone.
+    columns:
+      - name: zone_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_trip
+    description: One row per trip/request.
+    columns:
+      - name: trip_id
+        tests:
+          - not_null
+          - unique
+      - name: driver_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_driver')
+              field: driver_id
+      - name: zone_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_zone')
+              field: zone_id
+      - name: full_date
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: full_date
+      - name: request_hour
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+              quote: false
+      - name: is_completed
+        tests:
+          - accepted_values:
+              values: [true, false]
+              quote: false
+      - name: is_cancelled
+        tests:
+          - accepted_values:
+              values: [true, false]
+              quote: false
+      - name: is_surged
+        tests:
+          - accepted_values:
+              values: [true, false]
+              quote: false
+
+  - name: fact_zone_hour
+    description: One row per zone, calendar date, and request hour.
+    columns:
+      - name: zone_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_zone')
+              field: zone_id
+      - name: full_date
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: full_date
+      - name: request_hour
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+              quote: false
+
+  - name: mart_lost_revenue
+    description: One row per cancelled trip with an estimated lost fare.
+    columns:
+      - name: trip_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('fact_trip')
+              field: trip_id
+      - name: zone_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_zone')
+              field: zone_id
+      - name: estimated_lost_fare_zar
+        tests:
+          - not_null
