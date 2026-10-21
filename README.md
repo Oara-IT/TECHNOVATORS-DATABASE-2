@@ -177,8 +177,8 @@ The Power BI report connects to the star schema in BigQuery. **Pricing Zone** an
 ### 1. Clone and configure
 
 ```bash
-git clone https://github.com/Oara-IT/technovators-database-2.git
-cd technovators-database-2
+git clone https://github.com/Oara-IT/TECHNOVATORS-DATABASE-2.git
+cd TECHNOVATORS-DATABASE-2
 ```
 
 Create a `.env` file in the repo root. It is listed in `.gitignore`, so it never gets committed.
